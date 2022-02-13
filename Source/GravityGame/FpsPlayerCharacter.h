@@ -19,19 +19,24 @@ class AFpsPlayerCharacter : public ACharacter {
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
 
+private:
+	float GravityDirectionZ = -1.f;
+
 public:
 	AFpsPlayerCharacter();
 
 protected:
 	virtual void BeginPlay();
-
-protected:
-	void MoveForward(float Val);
-	void MoveRight(float Val);
 	
 protected:
 	// From APawn Fnterface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+
+private:
+	void MoveForward(float Val);
+	void MoveRight(float Val);
+	void ToggleZGravity();
+	void UpdateSceneGravity();
 
 public:
 	UCameraComponent* GetFirstPersonCameraComponent() const {
