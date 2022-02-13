@@ -10,7 +10,12 @@
 		}
 	],
 	"settings": {
-		"typescript.tsc.autoDetect": "off"
+		"typescript.tsc.autoDetect": "off",
+		"C_Cpp.default.forcedInclude": [
+			"${default}",
+			"E:\\Game Dev\\Unreal Projects\\GravityGame\\Intermediate\\Build\\Win64\\UE4Editor\\Development\\GravityGame\\Definitions.GravityGame.h",
+			"E:\\Game Dev\\Unreal Projects\\GravityGame\\Intermediate\\Build\\Win64\\GravityGameEditor\\Development\\Engine\\SharedPCH.Engine.ShadowErrors.h"
+		]
 	},
 	"extensions": {
 		"recommendations": [
