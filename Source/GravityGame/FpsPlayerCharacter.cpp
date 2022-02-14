@@ -4,6 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
+#include "GrabComponent.h"
 #include "GravityComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
@@ -18,6 +19,11 @@
  */
 
 
+/*--- Macros ---*/
+
+#define OUT
+
+
 /*--- Lifecycle Functions ---*/
 
 AFpsPlayerCharacter::AFpsPlayerCharacter() {
@@ -28,6 +34,12 @@ AFpsPlayerCharacter::AFpsPlayerCharacter() {
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+
+	// Set Up GrabComponent
+	UPhysicsHandleComponent *PhysicsComponent = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("Physics Component"));
+	this->AddOwnedComponent(PhysicsComponent);
+	UGrabComponent *GrabComponent = CreateDefaultSubobject<UGrabComponent>(TEXT("Grab Component"));
+	this->AddOwnedComponent(GrabComponent);
 }
 
 void AFpsPlayerCharacter::BeginPlay() {
@@ -76,7 +88,7 @@ void AFpsPlayerCharacter::UpdateSceneGravity() {
 	UGameplayStatics::GetAllActorsOfClass(
 		GetWorld(),
 		AActor::StaticClass(),
-		ActorsInScene
+		OUT ActorsInScene
 	);
 
 	for (AActor *Actor: ActorsInScene) {
