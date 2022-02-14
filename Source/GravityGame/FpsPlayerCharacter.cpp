@@ -61,6 +61,8 @@ void AFpsPlayerCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	// Gravity
+	PlayerInputComponent->BindAction("ToggleXGravity", IE_Pressed, this, &AFpsPlayerCharacter::ToggleXGravity);
+	PlayerInputComponent->BindAction("ToggleYGravity", IE_Pressed, this, &AFpsPlayerCharacter::ToggleYGravity);
 	PlayerInputComponent->BindAction("ToggleZGravity", IE_Pressed, this, &AFpsPlayerCharacter::ToggleZGravity);
 }
 
@@ -76,12 +78,19 @@ void AFpsPlayerCharacter::MoveRight(float Value) {
 	}
 }
 
-void AFpsPlayerCharacter::ToggleZGravity() {
-	GravityDirectionZ *= -1.f;
-	UpdateSceneGravity();
+void AFpsPlayerCharacter::ToggleXGravity() {
+	UpdateSceneGravity(FVector(-1.f, 1.f, 1.f));
 }
 
-void AFpsPlayerCharacter::UpdateSceneGravity() {
+void AFpsPlayerCharacter::ToggleYGravity() {
+	UpdateSceneGravity(FVector(1.f, -1.f, 1.f));
+}
+
+void AFpsPlayerCharacter::ToggleZGravity() {
+	UpdateSceneGravity(FVector(1.f, 1.f, -1.f));
+}
+
+void AFpsPlayerCharacter::UpdateSceneGravity(FVector Factor) {
 
 	// Get All Actors in Scene
 	TArray<AActor*> ActorsInScene;
@@ -99,7 +108,11 @@ void AFpsPlayerCharacter::UpdateSceneGravity() {
 
 			// Set Gravity
 			UGravityComponent *GravityComponent = Cast<UGravityComponent>(Component);
-			GravityComponent->GravityDirection = FVector(0.f, 0.f, GravityDirectionZ * 978.f);
+			GravityComponent->GravityDirection = FVector(
+				GravityComponent->GravityDirection.X * Factor.X,
+				GravityComponent->GravityDirection.Y * Factor.Y,
+				GravityComponent->GravityDirection.Z * Factor.Z
+			);
 		}
 	}
 }

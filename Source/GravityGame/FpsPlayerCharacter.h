@@ -19,9 +19,6 @@ class AFpsPlayerCharacter : public ACharacter {
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
 
-private:
-	float GravityDirectionZ = -1.f;
-
 public:
 	AFpsPlayerCharacter();
 
@@ -35,8 +32,10 @@ protected:
 private:
 	void MoveForward(float Val);
 	void MoveRight(float Val);
+	void ToggleXGravity();
+	void ToggleYGravity();
 	void ToggleZGravity();
-	void UpdateSceneGravity();
+	void UpdateSceneGravity(FVector Factor);
 
 public:
 	UCameraComponent* GetFirstPersonCameraComponent() const {
