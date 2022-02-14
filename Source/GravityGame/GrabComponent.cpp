@@ -1,6 +1,7 @@
 #include "Components/PrimitiveComponent.h"
 #include "DrawDebugHelpers.h"
 #include "GrabComponent.h"
+#include "GravityComponent.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/PlayerController.h"
 #include "Engine/World.h"
@@ -118,7 +119,25 @@ AActor *UGrabComponent::GetActorInView() {
 		RaycastParams
 	);
 
-	return RaycastHit.GetActor();
+	// Determine if Actor Returned
+	if (RaycastHit.GetActor()) {
+
+		// Determine if Actor Has GravityComponent
+		UActorComponent *Component = RaycastHit.GetActor()->FindComponentByClass(UGravityComponent::StaticClass());
+		if (Component) {
+
+			// Determine if Grabbing Enabled
+			UGravityComponent *GravityComponent = Cast<UGravityComponent>(Component);
+			if (GravityComponent && GravityComponent->Grabbable) {
+
+				// Return Actor
+				return RaycastHit.GetActor();
+			}
+		}
+	}
+
+	// No Actor Found
+	return nullptr;
 }
 
 void UGrabComponent::GrabObject() {

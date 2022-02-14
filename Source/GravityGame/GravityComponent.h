@@ -16,6 +16,8 @@ class UGravityComponent : public UActorComponent {
 public:
 	UPROPERTY(EditAnywhere)
 	FVector GravityDirection = FVector(0, 0, -978.f);
+	UPROPERTY(EditAnywhere)
+	bool Grabbable = true;
 
 public:
 	UGravityComponent();
